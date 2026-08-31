@@ -10,7 +10,7 @@ exports.getAllShelters = async (req, res) => {
   }
 };
 
-// Menambahkan posko baru & pemicu WebSocket Real-Time
+// Menambahkan posko baru
 exports.createShelter = async (req, res) => {
   const { name, location_name, latitude, longitude } = req.body;
 
@@ -25,7 +25,6 @@ exports.createShelter = async (req, res) => {
       [name, location_name, parseFloat(latitude), parseFloat(longitude)]
     );
 
-    // Emit event WebSocket ke frontend agar dropdown & peta langsung ter-update
     if (req.io) {
       req.io.emit('shelter_added', result.rows[0]);
     }
