@@ -38,3 +38,18 @@ exports.createShelter = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.deleteShelter = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM needs WHERE shelter_id = $1', [id]);
+    await db.query('DELETE FROM shelters WHERE id = $1', [id]);
+    if (req.io) {
+      req.io.emit('shelter_added');
+      req.io.emit('need_added');
+    }
+    res.status(200).json({ status: 'success', message: 'Posko berhasil dihapus' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

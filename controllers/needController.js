@@ -39,3 +39,30 @@ exports.createNeed = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Menghapus kebutuhan logistik
+exports.deleteNeed = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM needs WHERE id = $1', [id]);
+    if (req.io) req.io.emit('need_added');
+    res.status(200).json({ status: 'success', message: 'Kebutuhan berhasil dihapus' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Menandai kebutuhan terpenuhi secara manual
+exports.fulfillNeed = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query(
+      "UPDATE needs SET status = 'FULFILLED', quantity_fulfilled = quantity_required WHERE id = $1",
+      [id]
+    );
+    if (req.io) req.io.emit('need_added');
+    res.status(200).json({ status: 'success', message: 'Kebutuhan berhasil ditandai selesai' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
