@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const shelterRoutes = require('./routes/shelterRoutes');
@@ -25,13 +26,25 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// Routes API Backend
 app.use('/api/shelters', shelterRoutes);
 app.use('/api/needs', needRoutes);
 app.use('/api/match', matchRoutes); 
 
-app.get('/', (req, res) => {
+// Endpoint Health Check API
+app.get('/api/health', (req, res) => {
   res.send({ status: 'OK', message: 'API Disaster System Real-Time Aktif!' });
+});
+
+// -------------------------------------------------------------------
+// Path disesuaikan ke folder 'disaster-response-frontend/dist'
+// -------------------------------------------------------------------
+const frontendBuildPath = path.join(__dirname, '../disaster-response-frontend/dist');
+
+app.use(express.static(frontendBuildPath));
+
+app.use((req, res) => {
+  res.sendFile(path.join(frontendBuildPath, 'index.html'));
 });
 
 io.on('connection', (socket) => {
