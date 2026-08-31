@@ -9,6 +9,7 @@ const shelterRoutes = require('./routes/shelterRoutes');
 const needRoutes = require('./routes/needRoutes');
 const matchRoutes = require('./routes/matchRoutes');
 const sosRoutes = require('./routes/sosRoutes'); 
+const inventoryRoutes = require('./routes/inventoryRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -32,6 +33,7 @@ app.use('/api/shelters', shelterRoutes);
 app.use('/api/needs', needRoutes);
 app.use('/api/match', matchRoutes); 
 app.use('/api/sos', sosRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
 // Endpoint Health Check API
 app.get('/api/health', (req, res) => {
