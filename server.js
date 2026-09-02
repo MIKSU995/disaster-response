@@ -13,6 +13,7 @@ const inventoryRoutes = require('./routes/inventoryRoutes');
 const weatherRoutes = require('./routes/weatherRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const forecastRoutes = require('./routes/forecastRoutes');
+const fleetRoutes = require('./routes/fleetRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -40,6 +41,7 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/forecast', forecastRoutes);
+app.use('/api/fleet', fleetRoutes);
 
 // Endpoint Health Check API
 app.get('/api/health', (req, res) => {
